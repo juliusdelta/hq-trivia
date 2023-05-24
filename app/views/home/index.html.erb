@@ -1,2 +1,6 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<h1 class="text-2xl">HQ Trivia</h1>
+<%= link_to "Register", new_user_registration_path, class: "inline-block rounded bg-indigo-600 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500" %>
+<%= link_to "Login", new_user_session_path, class: "inline-block rounded bg-indigo-600 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500" %>
+<% if current_user %>
+  <p>Logged in as: current_user.email</p>
+<% end %>
