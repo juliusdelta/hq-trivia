@@ -9,7 +9,7 @@ class GameInstancesController < ApplicationController
     if current_user.join_with_session_for(game_instance)
       redirect_to game_instance_path(game_instance.id)
     else
-      flash[:alert] = 'Looks like you are already apart of a game!'
+      flash[:alert] = 'Looks like you are already apart of a game!' # rubocop:disable Rails/I18nLocaleTexts
       redirect_to root_path
     end
   end
