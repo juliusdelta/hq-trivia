@@ -3,6 +3,7 @@
 Game.destroy_all
 User.destroy_all
 Question.destroy_all
+GameInstance.destroy_all
 
 # QUESTIONS = [
 #   Question.new({ question: 'What is 1 + 1', options: %w[1 2 3 4], answer: '2' }),
@@ -13,14 +14,20 @@ GAMES = [
   {
     topic: 'Game of Thrones',
     description: 'Most popular show of all time.',
-    questions_attributes: [{ question: 'Who is Jon Snow?', options: ['Sansa', 'Joffery', 'King', 'King of the North'],
-                             answer: 'King of the North' }]
+    questions_attributes: [
+      {
+        question: 'Who is Jon Snow?',
+        options: ['Sansa', 'Joffery', 'King', 'King of the North'],
+        answer: 'King of the North'
+      }
+    ]
   },
   {
     topic: 'The Office',
     description: 'Popular NBC show -- Toby would not approve.',
-    questions_attributes: [{ question: 'Who did Michael Scott marry?', options: %w[pam stanley toby holly],
-                             answer: 'holly' }]
+    questions_attributes: [
+      { question: 'Who did Michael Scott marry?', options: %w[pam stanley toby holly], answer: 'holly' }
+    ]
   },
   {
     topic: 'Star Wars',
@@ -36,7 +43,8 @@ USERS = [
 ].freeze
 
 GAMES.each do |game|
-  Game.create!(**game)
+  created_game = Game.create!(**game)
+  GameInstance.create!(game: created_game, state: 'pending')
 end
 
 USERS.each { |user| User.create!(email: user[:email], password: user[:password]) }

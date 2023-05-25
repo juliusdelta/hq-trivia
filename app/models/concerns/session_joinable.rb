@@ -21,12 +21,9 @@ module SessionJoinable
   end
 
   def join_with_session_for(game_instance)
-    unless can_join_with_session?(game_instance)
-      raise StandardError,
-            'Cannot join a new session while one is in progress'
-    end
+    return false unless can_join_with_session?(game_instance)
 
-    PlayerSession.create!(user: self, game_instance:, active: true)
+    PlayerSession.create(user: self, game_instance:, active: true)
   end
 
   def disconnect_from_current_session(player_session)
@@ -34,6 +31,10 @@ module SessionJoinable
   end
 
   def can_join_with_session?(game_instance)
-    current_session.nil? && game_instance.joinable?
+    rejoinable?(game_instance) || (current_session.nil? && game_instance.joinable?)
+  end
+
+  def rejoinable?(game_instance)
+    current_session.game_instance.id == game_instance.id
   end
 end

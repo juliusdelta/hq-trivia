@@ -7,4 +7,8 @@ class Game < ApplicationRecord
   has_many :game_instances, dependent: :destroy
 
   accepts_nested_attributes_for :questions
+
+  def upcoming_instance
+    game_instances.pending.first
+  end
 end

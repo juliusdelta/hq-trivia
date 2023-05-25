@@ -2,12 +2,12 @@
 <%= link_to "Register", new_user_registration_path, class: "inline-block rounded bg-indigo-600 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500" %>
 <%= link_to "Login", new_user_session_path, class: "inline-block rounded bg-indigo-600 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500" %>
 <% if current_user %>
-  <p>Logged in as: current_user.email</p>
+  <p>Logged in as: <%= current_user.email %></p>
 <% end %>
 <div class="my-6 px-6 flex flex-col justify-evenly space-y-4">
   <% @games.each do |game| %>
     <div class="rounded-2xl bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-1 shadow-xl">
-      <a class="block rounded-xl bg-white p-4 sm:p-6 lg:p-8" href="">
+      <%= link_to join_game_instance_path(game.upcoming_instance.id), class: "block rounded-xl bg-white p-4 sm:p-6 lg:p-8" do %>
         <div class="mt-16">
           <h3 class="text-lg font-bold text-gray-900 sm:text-xl">
             <%= game.topic %>
@@ -16,7 +16,7 @@
             <%= game.description %>
           </p>
         </div>
-      </a>
+      <% end %>
     </div>
   <% end %>
 </div>
