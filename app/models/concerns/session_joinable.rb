@@ -20,15 +20,20 @@ module SessionJoinable
             inverse_of: :user
   end
 
-  def join_session_for(game_instance)
-    PlayerSession.create!(user: self, game_instance:) if can_join_session?
+  def join_with_session_for(game_instance)
+    unless can_join_with_session?(game_instance)
+      raise StandardError,
+            'Cannot join a new session while one is in progress'
+    end
+
+    PlayerSession.create!(user: self, game_instance:, active: true)
   end
 
-  def disconnect_from_session(player_session)
+  def disconnect_from_current_session(player_session)
     player_session.disconnect if player_session.active
   end
 
-  def can_join_session?
-    current_session.nil?
+  def can_join_with_session?(game_instance)
+    current_session.nil? && game_instance.joinable?
   end
 end

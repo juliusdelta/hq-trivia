@@ -5,12 +5,23 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   test 'can join a session for game instance' do
     user = users(:beth)
-    game = games(:math)
+    instance = game_instances(:math_instance)
 
-    instance = GameInstance.create!(game:, state: 'playing')
+    user.join_with_session_for(instance)
+    user.reload
 
-    user.join_session_for(instance)
+    assert_not_nil user.current_session
+  end
 
-    assert_equal 1, instance.player_sessions.count
+  test 'cannot join multiple game instances' do
+    user = users(:sam)
+    instance = game_instances(:math_instance)
+
+    user.join_with_session_for(instance)
+    user.reload
+
+    assert_raises StandardError do
+      user.join_with_session_for(instance)
+    end
   end
 end

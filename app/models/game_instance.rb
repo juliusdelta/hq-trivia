@@ -10,4 +10,8 @@ class GameInstance < ApplicationRecord
   belongs_to :game
   belongs_to :winner, class_name: 'User', optional: true
   has_many :player_sessions, dependent: :destroy
+
+  def joinable?
+    state == 'pending' && player_sessions.count <= MAX_PLAYER_COUNT
+  end
 end
