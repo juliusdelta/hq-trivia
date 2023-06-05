@@ -35,6 +35,6 @@ module SessionJoinable
   end
 
   def rejoinable?(game_instance)
-    current_session.game_instance.id == game_instance.id
+    current_session&.game_instance&.id == game_instance.id
   end
 end
