@@ -1,1 +1,9 @@
 <h1><%= @game_instance.id %></h1>
+<%= turbo_stream_from @game_instance %>
+<div id="player-count">
+  <%= render partial: "game_instances/player_session_count", locals: { game_instance: @game_instance } %>
+</div>
+<% @game_instance.game.questions.each do |question| %>
+  <h2><%= question.question %></h2>
+  <h1><%= question.options %></h2>
+<% end %>

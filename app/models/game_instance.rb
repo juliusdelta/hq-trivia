@@ -4,11 +4,10 @@
 # 'questioning'
 # 'answered'
 # 'completed'
+# require_relative './game_instance_state'
 
 class GameInstance < ApplicationRecord
   MAX_PLAYER_COUNT = 200
-
-  attr_reader :current_state
 
   belongs_to :game
   belongs_to :winner, class_name: 'User', optional: true
@@ -16,14 +15,20 @@ class GameInstance < ApplicationRecord
 
   scope :pending, -> { where(state: 'pending') }
 
-  after_initialize :set_state
+  after_initialize :current_state
+
+  STATES = {
+    pending: GameInstanceState::PendingState,
+    in_progress: GameInstanceState::InProgressState,
+    completed: GameInstanceState::CompletedState
+  }.freeze
 
   def joinable?
     state == 'pending' && player_sessions.count <= MAX_PLAYER_COUNT
   end
 
-  def set_state
-    @current_state = GameInstanceState.set_state(self, state)
+  def current_state
+    @current_state = STATES[state.to_sym].new(self, state)
   end
 
   def transition_to(state_obj)
